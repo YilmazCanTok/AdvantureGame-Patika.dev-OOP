@@ -1,6 +1,6 @@
 public class Knight extends Characters{
 
     public Knight() {
-        super(24, 0, 8, 100, "Knight", 3);
+        super(24, 0, 8, 5, "Knight", 3);
     }
 }
