@@ -27,6 +27,7 @@ public class ToolStore extends NormalLocation{
                     "2- Weapons\n" +
                     "3- Exit");
             System.out.println("***********************************");
+            System.out.println("Your Money is : "+player.getMoney()+" now");
             System.out.print("Please enter the number to make an action : ");
             int action = scanner.nextInt();
             if (action == 1) {

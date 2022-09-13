@@ -79,6 +79,7 @@ public class Game {
            }
            if (!location.onLocation()){
                System.out.println("Game Over");
+               break;
            }
            if (player.getInventory().isWater() && player.getInventory().isFood() && player.getInventory().isFirewood() && location.getName().equals("Safe House")){
                 System.out.println("Congratulations, You are a Survivor. You finished all the Maps!");

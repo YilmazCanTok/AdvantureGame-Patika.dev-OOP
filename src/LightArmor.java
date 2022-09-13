@@ -1,5 +1,5 @@
 public class LightArmor extends Armor{
     public LightArmor() {
-        super(1, 1, 15);
+        super(1, 3, 15);
     }
 }
