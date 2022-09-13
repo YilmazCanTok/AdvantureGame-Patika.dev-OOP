@@ -1,4 +1,4 @@
-public abstract class Weapon {
+public abstract class Weapon extends Item{
     private int id;
     private int damage;
     private int amount;

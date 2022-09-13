@@ -27,48 +27,64 @@ public class Game {
         }
         System.out.println("**************************************************");
         player.selectCharacter();
-
-
+        selection();
+    }
+    public void selection(){
+        Location SafeHouse = new SafeHouse(player);
+        Location ToolStore = new ToolStore(player);
+        Location Cave = new Cave(player);
+        Location River = new River(player);
+        Location Forest = new Forest(player);
+        Location Mine = new Mine(player);
         String locations = ("********** Locations *********\n" +
                 "1.Safe House\n" +
                 "2.ToolStore\n" +
                 "3.Cave\n" +
                 "4.River\n" +
-                "5.Forest");
+                "5.Forest\n" +
+                "6.Mine");
         while (true) {
             System.out.println(locations);
             System.out.print("Please enter a number to select your area : ");
             int selection = scanner.nextInt();
-            switch (selection){
-                case 1:
-                    location = new SafeHouse(player);
-                    break;
-                case 2:
-                    location = new ToolStore(player);
-                    break;
-                case 3:
-                    location = new Cave(player);
-                    break;
-                case 4:
-                    location = new River(player);
-                    break;
-                case 5:
-                    location = new Forest(player);
-                    break;
-/*                case 6:
-                    location = new Mine(player);*/
-                default:
-                    location = new SafeHouse(player);
-            }
-            if (!location.onLocation()){
+           if(selection == 1){
+               location = SafeHouse;
+           }else if(selection==2){
+               location = ToolStore;
+           }else if(selection==3){
+               if (!player.getInventory().isFood()) {
+                   location = Cave;
+               }else{
+                   System.out.println("You already conquered te cave. Please select somewhere else");
+                   selection();
+               }
+           }else if(selection==4){
+               if (!player.getInventory().isWater()) {
+                   location = River;
+               }else{
+                   System.out.println("You already conquered te river. Please select somewhere else");
+                   selection();
+               }
+           }else if(selection==5){
+               if (!player.getInventory().isFirewood()) {
+                   location = Forest;
+               }else{
+                   System.out.println("You already conquered te forest. Please select somewhere else");
+                   selection();
+               }
+           }else if(selection==6){
+               location = Mine;
+           } else{
+               location = SafeHouse;
+           }
+           if (!location.onLocation()){
+               System.out.println("Game Over");
+           }
+           if (player.getInventory().isWater() && player.getInventory().isFood() && player.getInventory().isFirewood() && location.getName().equals("Safe House")){
+                System.out.println("Congratulations, You are a Survivor. You finished all the Maps!");
                 System.out.println("Game Over");
                 break;
-            }
-            if (player.getInventory().isWater() && player.getInventory().isFood() && player.getInventory().isFirewood()){
-                System.out.println("Congratulations, You are a SUrvivor. You finished all the Maps!");
-                System.out.println("Game Over");
-                break;
-            }
+           }
         }
     }
 }

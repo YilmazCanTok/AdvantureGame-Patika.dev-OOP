@@ -6,7 +6,7 @@ public abstract class BattleLocation extends Location {
     private Obstacle obstacle;
     private int maxObstacle;
     Scanner scanner = new Scanner(System.in);
-
+    private int chance;
     private int obstacleNumber;
 
     public BattleLocation(Player player, String name, Obstacle obstacle, String award, int maxObstacle) {
@@ -16,6 +16,13 @@ public abstract class BattleLocation extends Location {
         this.maxObstacle = maxObstacle;
     }
 
+    public int getChance() {
+        return chance;
+    }
+
+    public void setChance(int chance) {
+        this.chance = chance;
+    }
     public String getAward() {
         return award;
     }
@@ -95,6 +102,7 @@ public abstract class BattleLocation extends Location {
     }
 
     public boolean combat(int oNumber) {
+        Random hitFirst = new Random();
         for (int i = 1; i <= oNumber; i++) {
             this.getObstacle().setHp(this.getObstacle().getOriginalHp());
             playerStatus();
@@ -103,25 +111,33 @@ public abstract class BattleLocation extends Location {
                 System.out.print("Hit or Run");
                 String selectCombat=scanner.nextLine().toUpperCase();
                 if (selectCombat.equals("H")) {
-                    System.out.println("You hit the "+obstacle.getName());
-                    obstacle.setHp(obstacle.getHp()-player.getDamage());
-                    afterHit();
-                    System.out.println("--------------------------------");
-                    if (obstacle.getHp()<=0){
-                        System.out.println("You killed the "+obstacle.getName());
-                    } else{
-                        System.out.println(obstacle.getName()+" hit you");
+                    setChance(hitFirst.nextInt(2));
+                    if(this.obstacle.getHp()>0 && chance==0){
+                        System.out.println("The obstacle hit you " + this.obstacle.getDamage() + " damage");
                         armorCheck();
+                        if (player.getHealthPoint()>0) {
+                            System.out.println("You hit the obstacle " + player.getDamage()+" damage");
+                            obstacle.setHp(this.obstacle.getHp()-player.getDamage());
+                            System.out.println(this.obstacle.getName()+" hp is now : "+this.obstacle.getHp());
+                        }
+                    } else if (this.obstacle.getHp()>0 && chance==1) {
+                        System.out.println("You hit the obstacle " + player.getDamage()+" damage");
+                        this.obstacle.setHp(obstacle.getHp()-player.getDamage());
+                        System.out.println(this.obstacle.getName()+" hp is now : "+this.obstacle.getHp());
+                        if (this.obstacle.getHp()>0){
+                            System.out.println("The obstacle hit you " + this.obstacle.getDamage() + " damage");
+                            armorCheck();
+                        }
                     }
                 }else{
                     System.out.println("You ran away");
                     return false;
                 }
             }
-            if (obstacle.getHp()<player.getHealthPoint()){
+            if (this.obstacle.getHp()<player.getHealthPoint()){
                 System.out.println("You defeated the enemy");
-                System.out.println("You earned "+obstacle.getAward()+" money");
-                player.setMoney(player.getMoney()+obstacle.getAward());
+                System.out.println("You earned "+this.obstacle.getAward()+" money");
+                player.setMoney(player.getMoney()+this.obstacle.getAward());
             }else{
                 return false;
             }
@@ -129,18 +145,14 @@ public abstract class BattleLocation extends Location {
         return true;
     }
 
-    public void afterHit(){
-        System.out.println("Your Hp: "+player.getHealthPoint());
-        System.out.println(obstacle.getName()+" Hp: "+obstacle.getHp());
-        System.out.println();
-    }
+
 
     public void armorCheck(){
-        if (player.getInventory().getArmorDefence()>obstacle.getDamage()){
+        if (player.getInventory().getArmorDefence()>this.obstacle.getDamage()){
             System.out.println("Obstacle's hit has been blocked by your armor...");
             System.out.println("Your Health Point is still : "+player.getHealthPoint());
         }else {
-            player.setHealthPoint(player.getHealthPoint()-obstacle.getDamage());
+            player.setHealthPoint(player.getHealthPoint()-this.obstacle.getDamage());
             System.out.println("Your Health Point is now : "+player.getHealthPoint());
         }
     }
@@ -152,9 +164,9 @@ public abstract class BattleLocation extends Location {
         System.out.println("Your Money : "+player.getMoney());
     }
     public void obstacleStatus(int i){
-        System.out.println(i+". Obstacle's Name : "+obstacle.getName());
-        System.out.println("Obstacle's HP : "+obstacle.getHp());
-        System.out.println("Obstacle's Damage : "+obstacle.getDamage());
-        System.out.println("Award When Obstacle Killed : "+obstacle.getAward());
+        System.out.println(i+". Obstacle's Name : "+this.obstacle.getName());
+        System.out.println("Obstacle's HP : "+this.obstacle.getHp());
+        System.out.println("Obstacle's Damage : "+this.obstacle.getDamage());
+        System.out.println("Award When Obstacle Killed : "+this.obstacle.getAward());
     }
 }

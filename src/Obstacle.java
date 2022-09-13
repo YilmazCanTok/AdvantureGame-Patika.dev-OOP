@@ -4,7 +4,6 @@ public abstract class Obstacle {
     private int damage;
     private String name;
     private int award;
-
     private int originalHp;
 
 
@@ -14,8 +13,8 @@ public abstract class Obstacle {
         this.hp = hp;
         this.damage = damage;
         this.name = name;
-        this.award = award;
         this.originalHp = hp;
+        this.award = award;
     }
 
     public int getOriginalHp() {

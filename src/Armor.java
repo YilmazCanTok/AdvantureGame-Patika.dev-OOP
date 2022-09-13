@@ -1,4 +1,4 @@
-public abstract class Armor {
+public abstract class Armor extends Item{
     private int id;
     private int block;
     private int amount;
